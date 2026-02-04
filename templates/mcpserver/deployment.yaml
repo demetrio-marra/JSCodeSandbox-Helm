@@ -16,7 +16,7 @@ spec:
         - name: {{ .Values.mcpserver.imagePullSecret }}
       containers:
         - name: mcpserver
-          image: 'registry.gitlab.com/demetrio-marra/myplatformmcpserver-ci/docker-image:{{ .Values.mcpserver.tag }}'
+          image: 'registry.gitlab.com/demetrio-marra/myplatformmcpserver-ci/docker_image:{{ .Values.mcpserver.tag }}'
           volumeMounts:
             - name: dem-root-ca-volume
               mountPath: /etc/ssl/certs/dem-root-ca.crt # Mounts the file `dem-root-ca.crt` from the configmap to this path
