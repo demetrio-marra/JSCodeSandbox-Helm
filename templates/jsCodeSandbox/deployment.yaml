@@ -17,11 +17,7 @@ spec:
       containers:
         - name: jsCodeSandbox
           image: 'registry.gitlab.com/demetrio-marra/JSCodeSandbox-ci/docker_image:{{ .Values.jsCodeSandbox.tag }}'
-          volumeMounts:
-            - name: dem-root-ca-volume
-              mountPath: /etc/ssl/certs/dem-root-ca.crt # Mounts the file `dem-root-ca.crt` from the configmap to this path
-              subPath: ca.crt # This ensures it mounts as a single file, not a directory
-              readOnly: true
+          volumeMounts:         
             - name: environments-volume
               mountPath: /opt/JSCodeSandbox/environments
           env:
@@ -56,10 +52,7 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-      volumes:
-        - name: dem-root-ca-volume
-          configMap:
-            name: dem-root-ca # Name of the ConfigMap we created
+      volumes:       
         - name: environments-volume
           persistentVolumeClaim:
             claimName: jsCodeSandboxPvc
