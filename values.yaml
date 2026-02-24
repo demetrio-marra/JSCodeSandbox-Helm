@@ -19,3 +19,4 @@ jsCodeSandbox:
 customCa:
   enabled: false
   existingSecret: ""
+  mountPath: ""
