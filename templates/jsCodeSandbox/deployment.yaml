@@ -16,7 +16,7 @@ spec:
         - name: {{ .Values.jsCodeSandbox.imagePullSecret }}
       containers:
         - name: jscodesandbox
-          image: 'registry.gitlab.com/demetrio-marra/JSCodeSandbox-ci/docker_image:{{ .Values.jsCodeSandbox.tag }}'
+          image: 'registry.gitlab.com/demetrio-marra/jscodesandbox-ci/docker_image:{{ .Values.jsCodeSandbox.tag }}'
           volumeMounts:         
             - name: environments-volume
               mountPath: /opt/JSCodeSandbox/environments
