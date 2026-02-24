@@ -12,11 +12,15 @@ spec:
       labels:
         app: jscodesandbox
     spec:
+      securityContext:
+        fsGroup: 1654
       imagePullSecrets:
         - name: {{ .Values.jsCodeSandbox.imagePullSecret }}
       containers:
         - name: jscodesandbox
           image: 'registry.gitlab.com/demetrio-marra/jscodesandbox-ci/docker_image:{{ .Values.jsCodeSandbox.tag }}'
+          securityContext:
+            runAsUser: 1654
           volumeMounts:         
             - name: environments-volume
               mountPath: /opt/JSCodeSandbox/environments
