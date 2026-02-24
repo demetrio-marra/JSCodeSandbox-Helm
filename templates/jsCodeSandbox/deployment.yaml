@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jsCodeSandbox
+  name: jscodesandbox
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jsCodeSandbox
+      app: jscodesandbox
   template:
     metadata:
       labels:
-        app: jsCodeSandbox
+        app: jscodesandbox
     spec:
       imagePullSecrets:
         - name: {{ .Values.jsCodeSandbox.imagePullSecret }}
       containers:
-        - name: jsCodeSandbox
+        - name: jscodesandbox
           image: 'registry.gitlab.com/demetrio-marra/JSCodeSandbox-ci/docker_image:{{ .Values.jsCodeSandbox.tag }}'
           volumeMounts:         
             - name: environments-volume
