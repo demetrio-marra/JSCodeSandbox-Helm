@@ -1,6 +1,6 @@
 apiVersion: v2
-name: mcpserver
-description: My company MCP server demo
+name: jscodesandbox
+description: A secure Node.js code execution environment built with .NET 8, providing sandboxed JavaScript execution using SES (Secure EcmaScript) for isolated and safe code execution.
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -15,7 +15,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 2025.04.24-48
+version: 2026.02.24-00
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to

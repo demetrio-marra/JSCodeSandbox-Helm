@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mcpserver
+  name: jsCodeSandbox
 spec:
   ports:
-   - port: 3001           # External port (e.g., what clients connect to)
+   - port: 80           # External port (e.g., what clients connect to)
      targetPort: 8080   # Matches the containerPort in the Deployment
      protocol: TCP
-     name: mcp-server
+     name: http
   selector:
-    app: mcpserver
+    app: jsCodeSandbox

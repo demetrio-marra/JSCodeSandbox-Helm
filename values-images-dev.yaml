@@ -1,2 +1,4 @@
-mcpserver:
+environment: 'Development'
+
+jsCodeSandbox:
   tag: 'fb705ed6.15'

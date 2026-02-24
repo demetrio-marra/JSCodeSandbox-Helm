@@ -1,2 +1,4 @@
-mcpserver:
-  tag: '23c38eea.18'
+environment: 'Production'
+
+jsCodeSandbox:
+  tag: '0'

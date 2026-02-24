@@ -1,5 +1,17 @@
 # values.yaml
-environment: 'Development'
 
-mcpserver:
+logLevel: Information
+
+codeExecutionEnvironmentsMongoRepository:
+  databaseName: JSCodeSandbox
+  collectionName: CodeExecutionEnvironments
+
+codeExecutionsAuditMongoRepository:
+  databaseName: JSCodeSandbox
+  collectionName: CodeExecutionsAudit
+
+sesJsCodeExecutionService:
+  environmentsBasePath: C:\Users\dmarra\source\jsenvironments
+
+jsCodeSandbox:
   imagePullSecret: gitlab-registry-secret
