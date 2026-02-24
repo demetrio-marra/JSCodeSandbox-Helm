@@ -55,4 +55,4 @@ spec:
       volumes:       
         - name: environments-volume
           persistentVolumeClaim:
-            claimName: jsCodeSandboxPvc
+            claimName: jscodesandbox-pvc
