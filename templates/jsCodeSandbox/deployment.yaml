@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jsCodeSandbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jsCodeSandbox
+  template:
+    metadata:
+      labels:
+        app: jsCodeSandbox
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.jsCodeSandbox.imagePullSecret }}
+      containers:
+        - name: jsCodeSandbox
+          image: 'registry.gitlab.com/demetrio-marra/JSCodeSandbox-ci/docker_image:{{ .Values.jsCodeSandbox.tag }}'
+          volumeMounts:
+            - name: dem-root-ca-volume
+              mountPath: /etc/ssl/certs/dem-root-ca.crt # Mounts the file `dem-root-ca.crt` from the configmap to this path
+              subPath: ca.crt # This ensures it mounts as a single file, not a directory
+              readOnly: true
+            - name: environments-volume
+              mountPath: /opt/JSCodeSandbox/environments
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: '{{ .Values.environment }}'
+              
+            - name: Logging__LogLevel__Default
+              value: {{ .Values.logLevel | quote }}
+            
+            - name: CodeExecutionEnvironmentsMongoRepository__ConnectionString
+              value: {{ .Values.codeExecutionEnvironmentsMongoRepository.connectionString | quote }}
+            
+            - name: CodeExecutionEnvironmentsMongoRepository__DatabaseName
+              value: {{ .Values.codeExecutionEnvironmentsMongoRepository.databaseName | quote }}
+            
+            - name: CodeExecutionEnvironmentsMongoRepository__CollectionName
+              value: {{ .Values.codeExecutionEnvironmentsMongoRepository.collectionName | quote }}
+            
+            - name: CodeExecutionsAuditMongoRepository__ConnectionString
+              value: {{ .Values.codeExecutionsAuditMongoRepository.connectionString | quote }}
+            
+            - name: CodeExecutionsAuditMongoRepository__DatabaseName
+              value: {{ .Values.codeExecutionsAuditMongoRepository.databaseName | quote }}
+            
+            - name: CodeExecutionsAuditMongoRepository__CollectionName
+              value: {{ .Values.codeExecutionsAuditMongoRepository.collectionName | quote }}
+            
+            - name: SESJSCodeExecutionService__EnvironmentsBasePath
+              value: {{ .Values.sesJsCodeExecutionService.environmentsBasePath | quote }}
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+      volumes:
+        - name: dem-root-ca-volume
+          configMap:
+            name: dem-root-ca # Name of the ConfigMap we created
+        - name: environments-volume
+          persistentVolumeClaim:
+            claimName: jsCodeSandboxPvc

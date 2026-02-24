@@ -1,2 +1,4 @@
-mcpserver:
-  tag: '00'
+environment: 'Production'
+
+jsCodeSandbox:
+  tag: '0'

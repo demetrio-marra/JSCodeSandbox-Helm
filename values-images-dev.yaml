@@ -1,2 +1,4 @@
-mcpserver:
-  tag: 'd5cb472e.17'
+environment: 'Development'
+
+jsCodeSandbox:
+  tag: '0'
