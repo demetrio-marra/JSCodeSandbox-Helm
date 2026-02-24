@@ -15,3 +15,7 @@ sesJsCodeExecutionService:
 
 jsCodeSandbox:
   imagePullSecret: gitlab-registry-secret
+
+customCa:
+  enabled: false
+  existingSecret: ""
