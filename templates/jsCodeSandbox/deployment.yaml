@@ -24,6 +24,11 @@ spec:
           volumeMounts:         
             - name: environments-volume
               mountPath: /opt/JSCodeSandbox/environments
+            {{- if .Values.customCa.enabled }}
+            - name: custom-ca
+              mountPath: {{ .Values.customCa.mountPath }}
+              readOnly: true
+            {{- end }}
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: '{{ .Values.environment }}'
@@ -52,6 +57,11 @@ spec:
             - name: SESJSCodeExecutionService__EnvironmentsBasePath
               value: {{ .Values.sesJsCodeExecutionService.environmentsBasePath | quote }}
 
+            {{- if .Values.customCa.enabled }}
+            - name: NODE_EXTRA_CA_CERTS
+              value: {{ .Values.customCa.mountPath }}/ca.crt
+            {{- end }}
+
           ports:
             - name: http
               containerPort: 8080
@@ -60,3 +70,8 @@ spec:
         - name: environments-volume
           persistentVolumeClaim:
             claimName: jscodesandbox-pvc
+        {{- if .Values.customCa.enabled }}
+        - name: custom-ca
+          secret:
+            secretName: {{ .Values.customCa.existingSecret }}
+        {{- end }}
