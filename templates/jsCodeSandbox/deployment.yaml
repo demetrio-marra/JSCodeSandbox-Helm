@@ -1,29 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jsCodeSandbox
+  name: jscodesandbox
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jsCodeSandbox
+      app: jscodesandbox
   template:
     metadata:
       labels:
-        app: jsCodeSandbox
+        app: jscodesandbox
     spec:
+      securityContext:
+        fsGroup: 1654
       imagePullSecrets:
         - name: {{ .Values.jsCodeSandbox.imagePullSecret }}
       containers:
-        - name: jsCodeSandbox
-          image: 'registry.gitlab.com/demetrio-marra/JSCodeSandbox-ci/docker_image:{{ .Values.jsCodeSandbox.tag }}'
-          volumeMounts:
-            - name: dem-root-ca-volume
-              mountPath: /etc/ssl/certs/dem-root-ca.crt # Mounts the file `dem-root-ca.crt` from the configmap to this path
-              subPath: ca.crt # This ensures it mounts as a single file, not a directory
-              readOnly: true
+        - name: jscodesandbox
+          image: 'registry.gitlab.com/demetrio-marra/jscodesandbox-ci/docker_image:{{ .Values.jsCodeSandbox.tag }}'
+          securityContext:
+            runAsUser: 1654
+          volumeMounts:         
             - name: environments-volume
               mountPath: /opt/JSCodeSandbox/environments
+            {{- if .Values.customCa.enabled }}
+            - name: custom-ca
+              mountPath: {{ .Values.customCa.mountPath }}
+              readOnly: true
+            {{- end }}
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: '{{ .Values.environment }}'
@@ -52,14 +57,21 @@ spec:
             - name: SESJSCodeExecutionService__EnvironmentsBasePath
               value: {{ .Values.sesJsCodeExecutionService.environmentsBasePath | quote }}
 
+            {{- if .Values.customCa.enabled }}
+            - name: NODE_EXTRA_CA_CERTS
+              value: {{ .Values.customCa.mountPath }}/ca.crt
+            {{- end }}
+
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
-      volumes:
-        - name: dem-root-ca-volume
-          configMap:
-            name: dem-root-ca # Name of the ConfigMap we created
+      volumes:       
         - name: environments-volume
           persistentVolumeClaim:
-            claimName: jsCodeSandboxPvc
+            claimName: jscodesandbox-pvc
+        {{- if .Values.customCa.enabled }}
+        - name: custom-ca
+          secret:
+            secretName: {{ .Values.customCa.existingSecret }}
+        {{- end }}
